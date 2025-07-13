@@ -33,19 +33,20 @@ dependencies = [
     { name = "django" },
 ]
 
-[package.optional-dependencies]
+[package.dev-dependencies]
 dev = [
     { name = "django-stubs", extra = ["compatible-mypy"] },
     { name = "mypy" },
 ]
 
 [package.metadata]
-requires-dist = [
-    { name = "django", specifier = "==5.2.4" },
-    { name = "django-stubs", extras = ["compatible-mypy"], marker = "extra == 'dev'", specifier = "==5.2.1" },
-    { name = "mypy", marker = "extra == 'dev'", specifier = "==1.16.1" },
+requires-dist = [{ name = "django", specifier = "==5.2.4" }]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "django-stubs", extras = ["compatible-mypy"], specifier = "==5.2.1" },
+    { name = "mypy", specifier = "==1.16.1" },
 ]
-provides-extras = ["dev"]
 
 [[package]]
 name = "django-stubs"
