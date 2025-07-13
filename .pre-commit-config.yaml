@@ -1,6 +1,13 @@
 repos:
   - repo: local
     hooks:
+      - id: uv-lock-check
+        name: uv lock check
+        entry: uv lock --check
+        language: system
+        files: pyproject.toml
+        pass_filenames: false
+        require_serial: true
       - id: ruff-format
         name: ruff format
         entry: uv run ruff format --force-exclude

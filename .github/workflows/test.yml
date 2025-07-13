@@ -18,6 +18,8 @@ jobs:
           python-version: '3.13'
       - name: Install uv
         run: pip install uv
+      - name: Lock check
+        run: uv lock --check
       - name: Install dependencies
         run: uv pip install --system --group dev
       - name: Run ruff format
