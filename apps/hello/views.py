@@ -1,4 +1,5 @@
 from django.http import HttpRequest, HttpResponse
+
 from .models import Greeting, Response
 
 

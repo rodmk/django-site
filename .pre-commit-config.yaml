@@ -7,16 +7,21 @@ repos:
         language: system
         files: pyproject.toml
         pass_filenames: false
-        require_serial: true
-      - id: ruff-check
-        name: ruff check
-        entry: uv run ruff check
+      - id: ruff-check-autofix
+        name: ruff check (autofix)
+        entry: bash -c "uv run ruff check --fix-only "$@" && git add -u"
         language: system
         types_or: [python, pyi]
         require_serial: true
-      - id: ruff-format
-        name: ruff format
+      - id: ruff-format-autofix
+        name: ruff format (autofix)
         entry: bash -c "uv run ruff format "$@" && git add -u"
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+      - id: ruff-check
+        name: ruff check
+        entry: ruff check
         language: system
         types_or: [python, pyi]
         require_serial: true

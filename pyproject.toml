@@ -24,6 +24,12 @@ plugins = "mypy_django_plugin.main"
 django_settings_module = "mysite.settings"
 
 [tool.ruff]
+lint.select = [
+    "F",   # pyflakes
+    "I",   # isort
+    "DJ",  # django
+    "UP",  # pyupgrade
+]
 extend-exclude = [
     "apps/*/migrations/*",
 ]
