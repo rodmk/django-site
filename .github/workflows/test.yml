@@ -2,9 +2,9 @@ name: Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   static-analysis:
@@ -21,6 +21,10 @@ jobs:
         run: ruff check .
       - name: Run ruff format
         run: ruff format --check .
+
+      - name: Run toml-sort
+        run: shopt -s globstar && toml-sort --check **/*.toml
+
       - name: Run mypy
         run: mypy .
 
@@ -33,6 +37,6 @@ jobs:
         uses: ./.github/actions/setup
       - name: Install dependencies
         run: uv sync --locked --all-extras
-        
+
       - name: Run Django tests
         run: uv run python manage.py test

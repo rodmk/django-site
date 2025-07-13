@@ -7,21 +7,30 @@ repos:
         language: system
         files: pyproject.toml
         pass_filenames: false
+
+      # ruff hooks
       - id: ruff-check-autofix
         name: ruff check (autofix)
-        entry: bash -c "uv run ruff check --fix-only "$@" && git add -u"
+        entry: bash -c 'uv run ruff check --fix-only "$@" && git add -u' _
         language: system
         types_or: [python, pyi]
         require_serial: true
       - id: ruff-format-autofix
         name: ruff format (autofix)
-        entry: bash -c "uv run ruff format "$@" && git add -u"
+        entry: bash -c 'uv run ruff format "$@" && git add -u' _
         language: system
         types_or: [python, pyi]
         require_serial: true
       - id: ruff-check
         name: ruff check
-        entry: ruff check
+        entry: uv run ruff check
         language: system
         types_or: [python, pyi]
         require_serial: true
+
+      # toml hooks
+      - id: toml-sort-autofix
+        name: toml-sort (autofix)
+        entry: bash -c 'uv run toml-sort -i "$@" && git add -u' _
+        language: system
+        types_or: [toml]

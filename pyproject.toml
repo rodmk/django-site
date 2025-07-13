@@ -5,15 +5,16 @@ description = "Django web application"
 readme = "README.md"
 requires-python = "==3.13.5"
 dependencies = [
-    "django==5.2.4",
+  "django==5.2.4",
 ]
 
 [dependency-groups]
 dev = [
-    "django-stubs[compatible-mypy]==5.2.1",
-    "mypy==1.16.1",
-    "pre-commit==4.2.0",
-    "ruff==0.12.3",
+  "django-stubs[compatible-mypy]==5.2.1",
+  "mypy==1.16.1",
+  "pre-commit==4.2.0",
+  "ruff==0.12.3",
+  "toml-sort==0.24.2",
 ]
 
 [tool.mypy]
@@ -24,13 +25,18 @@ plugins = "mypy_django_plugin.main"
 django_settings_module = "mysite.settings"
 
 [tool.ruff]
-lint.select = [
-    "F",   # pyflakes
-    "I",   # isort
-    "DJ",  # django
-    "UP",  # pyupgrade
-]
 extend-exclude = [
-    "apps/*/migrations/*",
+  "apps/*/migrations/*",
 ]
 force-exclude = true
+lint.select = [
+  "F", # pyflakes
+  "I", # isort
+  "DJ", # django
+  "UP", # pyupgrade
+]
+
+[tool.tomlsort]
+in_place = true
+no_sort_tables = true
+trailing_comma_inline_array = true
