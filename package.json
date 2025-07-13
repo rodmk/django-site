@@ -1,0 +1,11 @@
+{
+  "name": "django-site",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:rodmk/django-site.git",
+  "author": "Rodrigo Muñoz <rod@rodmk.com>",
+  "license": "MIT",
+  "dependencies": {
+    "prettier": "==3.6.2"
+  }
+}

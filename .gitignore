@@ -15,3 +15,7 @@ venv/
 
 # mypy daemon
 .dmypy.json
+
+# Yarn
+node_modules/
+yarn-error.log*

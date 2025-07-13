@@ -1,11 +1,16 @@
 repos:
   - repo: local
     hooks:
-      - id: uv-lock-check
-        name: uv lock check
-        entry: uv lock --check
+      # environment setup hooks
+      - id: uv-sync
+        name: uv sync
+        entry: bash -c 'uv sync && git add -u' _
         language: system
-        files: pyproject.toml
+        pass_filenames: false
+      - id: yarn-install
+        name: yarn install
+        entry: bash -c 'yarn install && git add -u' _
+        language: system
         pass_filenames: false
 
       # ruff hooks
@@ -34,3 +39,10 @@ repos:
         entry: bash -c 'uv run toml-sort -i "$@" && git add -u' _
         language: system
         types_or: [toml]
+
+      # prettier hooks
+      - id: prettier-autofix
+        name: prettier (autofix)
+        entry: bash -c 'yarn run prettier --write "$@" && git add -u' _
+        language: system
+        types_or: [yaml]
