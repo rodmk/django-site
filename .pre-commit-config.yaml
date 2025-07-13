@@ -8,9 +8,15 @@ repos:
         files: pyproject.toml
         pass_filenames: false
         require_serial: true
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
       - id: ruff-format
         name: ruff format
-        entry: uv run ruff format --force-exclude
+        entry: bash -c "uv run ruff format "$@" && git add -u"
         language: system
         types_or: [python, pyi]
         require_serial: true

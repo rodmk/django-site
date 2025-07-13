@@ -12,3 +12,6 @@ venv/
 
 # OS
 .DS_Store
+
+# mypy daemon
+.dmypy.json

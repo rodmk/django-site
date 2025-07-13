@@ -1,8 +1,8 @@
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from .models import Greeting, Response
 
 
-def hello_world(request) -> HttpResponse:
+def hello_world(request: HttpRequest) -> HttpResponse:
     # Get or create a greeting
     greeting, created = Greeting.objects.get_or_create(
         message="Hello, World!", defaults={"message": "Hello, World!"}
