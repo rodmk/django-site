@@ -28,4 +28,3 @@ extend-exclude = [
     "apps/*/migrations/*",
 ]
 force-exclude = true
-

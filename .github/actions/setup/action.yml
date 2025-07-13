@@ -1,0 +1,15 @@
+name: Set up environment
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version-file: 'pyproject.toml'
+    - name: Install uv
+      run: pip install uv
+      shell: bash
+    - name: Lock check
+      run: uv lock --check
+      shell: bash
