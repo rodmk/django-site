@@ -26,6 +26,15 @@ jobs:
       # linters
       - name: Run ruff check
         run: uv run ruff check .
+
+  type-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up environment
+        uses: ./.github/actions/setup
+
       - name: Run mypy
         run: uv run mypy .
 

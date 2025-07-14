@@ -1,5 +1,3 @@
-# Makefile for setting up Python (uv) and JavaScript (yarn) dependencies
-
 .PHONY: dev-setup
 dev-setup:
 	uv sync
@@ -23,3 +21,8 @@ test:
 .PHONY: pre-commit
 pre-commit:
 	pre-commit run --all-files
+
+.PHONY: type-check
+type-check:
+	@make dev-setup > /dev/null 2>&1 || exit 1
+	uv run dmypy run -- .
