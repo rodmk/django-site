@@ -26,8 +26,36 @@ jobs:
       # linters
       - name: Run ruff check
         run: uv run ruff check .
+
+  type-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up environment
+        uses: ./.github/actions/setup
+
+      - name: Print 10 most recent git commit SHAs from merge base
+        run: |
+          MERGE_BASE=$(git merge-base origin/main HEAD)
+          git log --pretty=format:'%H' $MERGE_BASE..HEAD | head -n 10
+
+      - name: Restore mypy cache
+        if: github.event_name == 'pull_request'
+        uses: actions/cache/restore@v4
+        with:
+          path: .mypy_cache
+          key: mypy-cache-${{ runner.os }}-${{ hashFiles('pyproject.yaml') }}-${{ github.event.pull_request.base.sha }}
+
       - name: Run mypy
         run: uv run mypy .
+
+      - name: Save mypy cache
+        if: github.ref == 'refs/heads/main'
+        uses: actions/cache/save@v4
+        with:
+          path: .mypy_cache
+          key: mypy-cache-${{ runner.os }}-${{ hashFiles('pyproject.yaml') }}-${{ github.sha }}
 
   tests:
     runs-on: ubuntu-latest

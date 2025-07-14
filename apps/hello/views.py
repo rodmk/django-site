@@ -3,6 +3,7 @@ from django.http import HttpRequest, HttpResponse
 from .models import Greeting, Response
 
 
+# test comment please ignore
 def hello_world(request: HttpRequest) -> HttpResponse:
     # Get or create a greeting
     greeting, created = Greeting.objects.get_or_create(
