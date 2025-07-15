@@ -1,5 +1,22 @@
 {
-    "python.defaultInterpreterPath": "./.venv/bin/python",
+    // python settings
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    },
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "python.terminal.activateEnvironment": true,
-    "python.terminal.activateEnvInCurrentTerminal": true
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    // pylance settings
+    // use mypy for type checking
+    "python.analysis.exclude": [
+        "**"
+    ],
+    "python.analysis.ignore": [
+        "**"
+    ],
+    // mypy type checker
+    "mypy-type-checker.importStrategy": "fromEnvironment",
+    "mypy-type-checker.preferDaemon": true,
+    "mypy-type-checker.reportingScope": "workspace",
 }

@@ -20,7 +20,6 @@ def hello_world(request: HttpRequest) -> HttpResponse:
 
     # Get all responses for this greeting
     responses = greeting.responses.all()
-
     # Build HTML response demonstrating foreign key access
     html = f"<h1>{greeting.message}</h1>"
     html += f"<p>Greeting created: {greeting.created_at}</p>"

@@ -1,28 +1,31 @@
-.PHONY: dev-setup
-dev-setup:
-	uv sync
-	yarn install
+.PHONY: install-deps .install-deps venv runserver migrate test pre-commit type-check
+.DEFAULT_GOAL = runserver
 
-.PHONY: runserver
-runserver:
-	@make dev-setup > /dev/null 2>&1 || exit 1
+install-deps:
+	uv sync --locked
+	yarn install --frozen-lockfile
+
+.install-deps:
+	@make install-deps > /dev/null 2>&1 || exit 1
+
+update-deps:
+	uv update --locked
+	yarn upgrade --latest
+
+venv: .install-deps
+	source .venv/bin/activate
+
+runserver: .install-deps
 	uv run python manage.py runserver
 
-.PHONY: migrate
-migrate:
-	@make dev-setup > /dev/null 2>&1 || exit 1
+migrate: .install-deps
 	uv run python manage.py migrate
 
-.PHONY: test
-test:
-	@make dev-setup > /dev/null 2>&1 || exit 1
+test: .install-deps
 	uv run python manage.py test
 
-.PHONY: pre-commit
-pre-commit:
+pre-commit: .install-deps
 	pre-commit run --all-files
 
-.PHONY: type-check
-type-check:
-	@make dev-setup > /dev/null 2>&1 || exit 1
+type-check: .install-deps
 	uv run dmypy run -- .
