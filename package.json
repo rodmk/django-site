@@ -5,6 +5,9 @@
   "repository": "git@github.com:rodmk/django-site.git",
   "author": "Rodrigo Muñoz <rod@rodmk.com>",
   "license": "MIT",
+  "engines": {
+    "node": "==24.4.0"
+  },
   "dependencies": {
     "prettier": "==3.6.2"
   }
