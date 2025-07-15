@@ -22,7 +22,7 @@ runs:
       run: pip install uv
       shell: bash
     - name: Install Python dependencies
-      run: uv sync --locked --all-extras
+      run: uv sync --locked
       shell: bash
 
     # node deps
