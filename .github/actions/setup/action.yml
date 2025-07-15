@@ -1,9 +1,19 @@
 name: Set up environment
+description: Installs dependencies.
 
 runs:
   using: "composite"
   steps:
     # python deps
+    - name: Cache Python dependencies (uv)
+      uses: actions/cache@v4
+      with:
+        path: |
+          .venv
+          ~/.cache/uv
+        key: deps-python-${{ runner.os }}-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+        restore-keys: |
+          deps-python-${{ runner.os }}-
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
@@ -14,7 +24,17 @@ runs:
     - name: Install Python dependencies
       run: uv sync --locked --all-extras
       shell: bash
+
     # node deps
+    - name: Cache Node.js dependencies (Yarn)
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          .yarn/cache
+        key: deps-node-${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
+        restore-keys: |
+          deps-node-${{ runner.os }}-
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
