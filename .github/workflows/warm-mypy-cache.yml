@@ -17,18 +17,11 @@ jobs:
       - name: Run mypy
         run: uv run mypy .
 
-      - name: Get current date
-        id: date
-        run: |
-          echo "year=$(date -u +'%Y')" >> $GITHUB_OUTPUT
-          echo "month=$(date -u +'%m')" >> $GITHUB_OUTPUT
-          echo "day=$(date -u +'%d')" >> $GITHUB_OUTPUT
-          echo "hour=$(date -u +'%H')" >> $GITHUB_OUTPUT
-        env:
-          TZ: UTC
-
+      - name: Generate build time key fragments
+        uses: ./.github/actions/build-time-key-fragment
+        id: keygen
       - name: Store cache
         uses: actions/cache/save@v4
         with:
           path: .mypy_cache
-          key: mypy-cache-${{ steps.date.outputs.year }}-${{ steps.date.outputs.month }}-${{ steps.date.outputs.day }}-${{ steps.date.outputs.hour }}
+          key: mypy-cache-${{ steps.keygen.outputs.primary_key }}
