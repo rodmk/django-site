@@ -5,6 +5,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  merge_group:
+    branches: [main]
 
 jobs:
   static-analysis:
@@ -13,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Set up environment
-        uses: .github/actions/setup
+        uses: ./.github/actions/setup
 
       # formatters
       - name: Run ruff format
@@ -33,7 +35,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Set up environment
-        uses: .github/actions/setup
+        uses: ./.github/actions/setup
 
       - name: Run mypy
         run: uv run mypy .
@@ -44,7 +46,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Set up environment
-        uses: .github/actions/setup
+        uses: ./.github/actions/setup
 
       - name: Run Django tests
         run: uv run python manage.py test
