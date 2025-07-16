@@ -37,6 +37,20 @@ jobs:
       - name: Set up environment
         uses: ./.github/actions/setup
 
+      - name: Generate build time key fragments
+        uses: ./.github/actions/build-time-key-fragment
+        id: keygen
+      - name: Restore mypy cache
+        if: github.event_name == 'pull_request'
+        uses: actions/cache/restore@v4
+        with:
+          path: .mypy_cache
+          key: mypy-cache-${{ steps.keygen.outputs.primary_key }}
+          restore-keys: |
+            mypy-cache-${{ steps.keygen.outputs.restore_key_1 }}
+            mypy-cache-${{ steps.keygen.outputs.restore_key_2 }}
+            mypy-cache-${{ steps.keygen.outputs.restore_key_3 }}
+
       - name: Run mypy
         run: uv run mypy .
 
