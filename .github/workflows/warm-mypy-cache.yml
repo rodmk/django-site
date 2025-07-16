@@ -15,7 +15,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run mypy
-        run: mypy .
+        run: uv run mypy .
 
       - name: Get current date
         id: date
