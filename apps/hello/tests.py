@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from .models import Greeting, Response
+from apps.hello.models import Greeting, Response
 
 
 class GreetingResponseModelTest(TestCase):

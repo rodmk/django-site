@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Greeting, Response
+from apps.hello.models import Greeting, Response
 
 # Register your models here.
 admin.site.register(Greeting)
