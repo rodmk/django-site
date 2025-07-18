@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [main]
   merge_group:
-    branches: [main]
+    types: [checks_requested]
 
 jobs:
   static-analysis:
@@ -37,22 +37,18 @@ jobs:
       - name: Set up environment
         uses: ./.github/actions/setup
 
-      - name: Generate build time key fragments
-        uses: ./.github/actions/build-time-key-fragment
-        id: keygen
       - name: Restore mypy cache
-        if: github.event_name == 'pull_request'
         uses: actions/cache/restore@v4
         with:
           path: .mypy_cache
-          key: mypy-cache-${{ steps.keygen.outputs.primary_key }}
+          key: mypy-cache-${{ github.ref_name }}-${{ github.sha }}
           restore-keys: |
-            mypy-cache-${{ steps.keygen.outputs.restore_key_1 }}
-            mypy-cache-${{ steps.keygen.outputs.restore_key_2 }}
-            mypy-cache-${{ steps.keygen.outputs.restore_key_3 }}
+            mypy-cache-${{ github.event.pull_request.base.ref || github.ref_name }}-
 
+      - name: Run dmypy
+        run: uv run dmypy run -- --use-fine-grained-cache .
       - name: Run mypy
-        run: uv run mypy .
+        run: uv run mypy --cache-dir=/dev/null .
 
   tests:
     runs-on: ubuntu-latest
