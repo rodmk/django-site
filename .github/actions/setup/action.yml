@@ -8,24 +8,23 @@ runs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version-file: "pyproject.toml"
+        python-version-file: pyproject.toml
     - name: Install uv
       uses: astral-sh/setup-uv@v6
       with:
-        version-file: "pyproject.toml"
+        version-file: pyproject.toml
         enable-cache: true
+        prune-cache: false
     - name: Install Python dependencies
-      run: uv sync --locked
       shell: bash
+      run: uv sync --locked
 
     # node deps
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version-file: "package.json"
-    - name: Install yarn
-      run: npm install -g yarn
-      shell: bash
+        node-version-file: package.json
+        cache: yarn
     - name: Install Node.js dependencies
-      run: yarn install --frozen-lockfile
       shell: bash
+      run: yarn install --frozen-lockfile
