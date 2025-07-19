@@ -19,7 +19,7 @@ def main() -> None:
     execute_from_command_line(sys.argv)
 
 
-def error() -> int:
+def returns_int() -> int:
     return "hello"
 
 
