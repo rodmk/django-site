@@ -29,7 +29,7 @@ jobs:
       - name: Run ruff check
         run: uv run ruff check .
       - name: Block @nomerge comments
-        run: git grep -n '@nomerge' -- ":!test.yml"
+        run: '! git grep -n "@nomerge" -- ":!.github/workflows/test.yml"'
 
   type-checks:
     runs-on: ubuntu-latest
