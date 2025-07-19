@@ -19,9 +19,5 @@ def main() -> None:
     execute_from_command_line(sys.argv)
 
 
-def returns_int() -> int:
-    return "hello"
-
-
 if __name__ == "__main__":
     main()
