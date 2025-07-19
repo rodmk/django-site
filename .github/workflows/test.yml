@@ -52,11 +52,17 @@ jobs:
         continue-on-error: true
       - name: Run mypy
         run: |
+          set -o pipefail
           uv run mypy --cache-dir=/dev/null . | while read -r line; do
-            if [[ "$line" =~ ^([^:]+):([0-9]+): ]]; then
+            if [[ "$line" =~ ^([^:]+):([0-9]+):\ ([a-z]+):\ (.*)$ ]]; then
               file="${BASH_REMATCH[1]}"
               lineno="${BASH_REMATCH[2]}"
-              echo "::error file=$file,line=$lineno::$line"
+              severity="${BASH_REMATCH[3]}"
+              message="${BASH_REMATCH[4]}"
+
+              level="notice"
+              [[ "$severity" == "error" ]] && level="error"
+              echo "::${level} file=$file,line=$lineno::$message"
             else
               echo "$line"
             fi
