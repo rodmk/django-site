@@ -6,6 +6,8 @@
 {% endif %}
 <form method="post">
   {% csrf_token %}
+  <label for="author_name">Your name:</label><br>
+  <input type="text" id="author_name" name="author_name" maxlength="100"><br><br>
   <label for="message">Message:</label><br>
   <input type="text" id="message" name="message" maxlength="200" required><br><br>
   <input type="submit" value="Create Greeting">

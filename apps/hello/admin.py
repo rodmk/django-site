@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from apps.hello.models import Greeting, Response
+from apps.hello.models import Message
 
 # Register your models here.
-admin.site.register(Greeting)
-admin.site.register(Response)
+admin.site.register(Message)

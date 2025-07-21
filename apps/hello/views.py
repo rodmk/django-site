@@ -1,15 +1,15 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
-from apps.hello.models import Greeting, Response
+from apps.hello.models import Message
 
 
 def hello_world(request: HttpRequest) -> HttpResponse:
-    greeting = Greeting.objects.order_by("-created_at").first()
+    greeting = Message.objects.filter(parent=None).order_by("-created_at").first()
     if greeting:
         responses = greeting.responses.all()
     else:
-        responses = Response.objects.none()
+        responses = Message.objects.none()
     return render(
         request,
         "hello/hello_world.html",
@@ -24,9 +24,14 @@ def create_greeting(request: HttpRequest) -> HttpResponse:
     """Create a new greeting."""
     error = None
     if request.method == "POST":
-        message = request.POST.get("message", "").strip()
-        if message:
-            greeting = Greeting.objects.create(message=message)
+        content = request.POST.get("message", "").strip()
+        author_name = (
+            request.POST.get("author_name", "Anonymous").strip() or "Anonymous"
+        )
+        if content:
+            greeting = Message.objects.create(
+                content=content, author_name=author_name, parent=None
+            )
             return redirect("greeting_detail", greeting_id=greeting.id)
         else:
             error = "Message cannot be empty."
@@ -36,8 +41,8 @@ def create_greeting(request: HttpRequest) -> HttpResponse:
 def greeting_detail(request: HttpRequest, greeting_id: int) -> HttpResponse:
     """Display a specific greeting with its responses and allow adding new responses."""
     try:
-        greeting = Greeting.objects.get(id=greeting_id)
-    except Greeting.DoesNotExist:
+        greeting = Message.objects.get(id=greeting_id, parent=None)
+    except Message.DoesNotExist:
         return render(request, "hello/greeting_not_found.html")
     responses = greeting.responses.all()
     return render(
@@ -55,14 +60,14 @@ def add_response(request: HttpRequest, greeting_id: int) -> HttpResponse:
     error = None
     if request.method == "POST":
         try:
-            greeting = Greeting.objects.get(id=greeting_id)
-        except Greeting.DoesNotExist:
+            greeting = Message.objects.get(id=greeting_id, parent=None)
+        except Message.DoesNotExist:
             return render(request, "hello/greeting_not_found.html")
-        author_name = request.POST.get("author_name", "").strip()
+        author_name = request.POST.get("author_name", "").strip() or "Anonymous"
         reply = request.POST.get("reply", "").strip()
         if author_name and reply:
-            Response.objects.create(
-                greeting=greeting, reply=reply, author_name=author_name
+            Message.objects.create(
+                content=reply, author_name=author_name, parent=greeting
             )
             return redirect("greeting_detail", greeting_id=greeting_id)
         else:
@@ -82,7 +87,7 @@ def add_response(request: HttpRequest, greeting_id: int) -> HttpResponse:
 
 def list_greetings(request: HttpRequest) -> HttpResponse:
     """List all greetings."""
-    greetings = Greeting.objects.all().order_by("-created_at")
+    greetings = Message.objects.filter(parent=None).order_by("-created_at")
     return render(
         request,
         "hello/list_greetings.html",

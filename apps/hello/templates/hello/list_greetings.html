@@ -5,9 +5,9 @@
   <ul>
     {% for greeting in greetings %}
       <li>
-        <a href="/hello/greeting/{{ greeting.id }}/">{{ greeting.message }}</a>
+        <a href="/hello/greeting/{{ greeting.id }}/">{{ greeting.content }}</a>
         ({{ greeting.responses.count }} response{% if greeting.responses.count != 1 %}s{% endif %}) -
-        Created: {{ greeting.created_at|date:"Y-m-d H:i" }}
+        By: {{ greeting.author_name }} - Created: {{ greeting.created_at|date:"Y-m-d H:i" }}
       </li>
     {% endfor %}
   </ul>

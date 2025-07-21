@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>{{ greeting.message }}</h1>
-<p>Greeting created: {{ greeting.created_at }}</p>
+<h1>{{ greeting.content }}</h1>
+<p>By: {{ greeting.author_name }} | Created: {{ greeting.created_at }}</p>
 <h2>Responses:</h2>
 <ul>
   {% for response in responses %}
-    <li><strong>{{ response.author_name }}</strong>: {{ response.reply }} (replied to: '{{ response.greeting.message }}' at {{ response.created_at }})</li>
+    <li><strong>{{ response.author_name }}</strong>: {{ response.content }} (replied at {{ response.created_at }})</li>
   {% empty %}
     <li>No responses yet.</li>
   {% endfor %}
