@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>All Greetings</h1>
+{% if greetings %}
+  <ul>
+    {% for greeting in greetings %}
+      <li>
+        <a href="/hello/greeting/{{ greeting.id }}/">{{ greeting.message }}</a>
+        ({{ greeting.responses.count }} response{% if greeting.responses.count != 1 %}s{% endif %}) -
+        Created: {{ greeting.created_at|date:"Y-m-d H:i" }}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No greetings found.</p>
+{% endif %}
+<p><a href="/hello/create/">Create a new greeting</a></p>
+<p><a href="/hello/">Back to Hello World</a></p>
+{% endblock %}

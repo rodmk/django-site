@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ greeting.message }}</h1>
+<p>Greeting created: {{ greeting.created_at }}</p>
+<h2>Responses:</h2>
+<ul>
+  {% for response in responses %}
+    <li><strong>{{ response.author_name }}</strong>: {{ response.reply }} (replied to: '{{ response.greeting.message }}' at {{ response.created_at }})</li>
+  {% empty %}
+    <li>No responses yet.</li>
+  {% endfor %}
+</ul>
+<h2>Actions:</h2>
+<p><a href="/hello/greeting/{{ greeting.id }}/">View/Reply to this greeting</a></p>
+<p><a href="/hello/create/">Create a new greeting</a></p>
+<p><a href="/hello/list/">View all greetings</a></p>
+{% endblock %}

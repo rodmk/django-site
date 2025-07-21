@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Create a New Greeting</h1>
+{% if error %}
+  <p style="color:red;">{{ error }}</p>
+{% endif %}
+<form method="post">
+  {% csrf_token %}
+  <label for="message">Message:</label><br>
+  <input type="text" id="message" name="message" maxlength="200" required><br><br>
+  <input type="submit" value="Create Greeting">
+</form>
+<p><a href="/hello/">Back to Hello World</a></p>
+{% endblock %}

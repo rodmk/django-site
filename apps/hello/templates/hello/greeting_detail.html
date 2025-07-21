@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ greeting.message }}</h1>
+<p>Greeting created: {{ greeting.created_at }}</p>
+<h2>Responses:</h2>
+<ul>
+  {% for response in responses %}
+    <li><strong>{{ response.author_name }}</strong>: {{ response.reply }} (replied at {{ response.created_at }})</li>
+  {% empty %}
+    <li>No responses yet.</li>
+  {% endfor %}
+</ul>
+{% if error %}
+  <p style="color:red;">{{ error }}</p>
+{% endif %}
+<h2>Add a Response</h2>
+<form method="post" action="/hello/greeting/{{ greeting.id }}/reply/">
+  {% csrf_token %}
+  <label for="author_name">Your name:</label><br>
+  <input type="text" id="author_name" name="author_name" maxlength="100" required><br><br>
+  <label for="reply">Your reply:</label><br>
+  <textarea id="reply" name="reply" maxlength="200" required></textarea><br><br>
+  <input type="submit" value="Add Response">
+</form>
+<p><a href="/hello/">Back to Hello World</a> | <a href="/hello/create/">Create New Greeting</a></p>
+{% endblock %}
