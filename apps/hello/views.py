@@ -14,10 +14,10 @@ def hello_world(request: HttpRequest) -> HttpResponse:
     # Create some sample responses if this is a new greeting
     if created:
         Response.objects.create(
-            greeting=greeting, reply="Hi there!", sender_name="Alice"
+            greeting=greeting, reply="Hi there!", author_name="Alice"
         )
         Response.objects.create(
-            greeting=greeting, reply="How are you?", sender_name="Bob"
+            greeting=greeting, reply="How are you?", author_name="Bob"
         )
 
     # Get all responses for this greeting
@@ -29,7 +29,7 @@ def hello_world(request: HttpRequest) -> HttpResponse:
 
     for response in responses:
         # These property accesses should be properly typed with django-stubs
-        html += f"<li><strong>{response.sender_name}</strong>: {response.reply}"
+        html += f"<li><strong>{response.author_name}</strong>: {response.reply}"
         html += f" (replied to: '{response.greeting.message}' at {response.created_at})</li>"
 
     html += "</ul>"
@@ -87,7 +87,7 @@ def greeting_detail(request: HttpRequest, greeting_id: int) -> HttpResponse:
     html += "<h2>Responses:</h2><ul>"
 
     for response in responses:
-        html += f"<li><strong>{response.sender_name}</strong>: {response.reply}"
+        html += f"<li><strong>{response.author_name}</strong>: {response.reply}"
         html += f" (replied at {response.created_at})</li>"
 
     html += "</ul>"
@@ -98,8 +98,8 @@ def greeting_detail(request: HttpRequest, greeting_id: int) -> HttpResponse:
     <h2>Add a Response</h2>
     <form method="post" action="/hello/greeting/{greeting_id}/reply/">
         <input type="hidden" name="csrfmiddlewaretoken" value="{csrf_token}">
-        <label for="sender_name">Your name:</label><br>
-        <input type="text" id="sender_name" name="sender_name" maxlength="100" required><br><br>
+        <label for="author_name">Your name:</label><br>
+        <input type="text" id="author_name" name="author_name" maxlength="100" required><br><br>
         <label for="reply">Your reply:</label><br>
         <textarea id="reply" name="reply" maxlength="200" required></textarea><br><br>
         <input type="submit" value="Add Response">
@@ -118,12 +118,12 @@ def add_response(request: HttpRequest, greeting_id: int) -> HttpResponse:
         except Greeting.DoesNotExist:
             return HttpResponse("<h1>Greeting not found</h1>")
 
-        sender_name = request.POST.get("sender_name", "").strip()
+        author_name = request.POST.get("author_name", "").strip()
         reply = request.POST.get("reply", "").strip()
 
-        if sender_name and reply:
+        if author_name and reply:
             Response.objects.create(
-                greeting=greeting, reply=reply, sender_name=sender_name
+                greeting=greeting, reply=reply, author_name=author_name
             )
             # Redirect back to the greeting detail page
             return redirect("greeting_detail", greeting_id=greeting_id)
