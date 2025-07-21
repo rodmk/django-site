@@ -73,3 +73,14 @@ jobs:
 
       - name: Run Django tests
         run: uv run python manage.py test
+
+  django-migrations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up environment
+        uses: ./.github/actions/setup
+
+      - name: makemigrations check
+        run: uv run python manage.py makemigrations --check
