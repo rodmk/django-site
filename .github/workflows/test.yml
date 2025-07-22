@@ -9,8 +9,9 @@ on:
     types: [checks_requested]
 
 jobs:
-  static-analysis:
+  continuous-integration:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,14 +32,7 @@ jobs:
       - name: Block @nomerge comments
         run: '! git grep -n "@nomerge" -- ":!.github/workflows/test.yml"'
 
-  type-checks:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up environment
-        uses: ./.github/actions/setup
-
+      # type check
       - name: Restore mypy cache
         uses: actions/cache/restore@v4
         with:
@@ -46,7 +40,6 @@ jobs:
           key: mypy-cache-${{ github.ref_name }}-${{ github.sha }}
           restore-keys: |
             mypy-cache-${{ github.event.pull_request.base.ref || github.event.repository.default_branch }}-
-
       - name: Run dmypy
         run: |
           set -o pipefail
@@ -56,14 +49,7 @@ jobs:
         run: |
           uv run mypy --cache-dir=/dev/null .
 
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up environment
-        uses: ./.github/actions/setup
-
+      # django tests
       - name: Run Django tests
         run: uv run python manage.py test
       - name: Run Django migrations check
@@ -73,9 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs:
-      - static-analysis
-      - type-checks
-      - tests
+      - continuous-integration
     permissions:
       contents: write
     steps:
