@@ -68,3 +68,25 @@ jobs:
         run: uv run python manage.py test
       - name: Run Django migrations check
         run: uv run python manage.py makemigrations --check
+
+  update-stable-tag:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs:
+      - static-analysis
+      - type-checks
+      - tests
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up git authentication
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+      - name: Update stable tag
+        run: |
+          git tag -f stable
+          git push origin stable --force
